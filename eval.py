@@ -17,6 +17,7 @@ import csv
 # Data Parameters
 tf.flags.DEFINE_string("positive_data_file", "./data/ibc-data/polarity.lib", "Data source for the liberal data.")
 tf.flags.DEFINE_string("negative_data_file", "./data/ibc-data/polarity.con", "Data source for the conservative data.")
+tf.flags.DEFINE_string("neutral_data_file", "./data/ibc-data/polarity.neu", "Data source for the neutral data.")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
@@ -37,14 +38,24 @@ print("")
 
 # CHANGE THIS: Load data. Load your own data here
 if FLAGS.eval_train:
-    x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.positive_data_file, FLAGS.negative_data_file)
+    x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.positive_data_file, FLAGS.negative_data_file, FLAGS.neutral_data_file)
     y_test = np.argmax(y_test, axis=1)
 else:
-    x_raw = ["WE ALL can play a role in recognizing + preventing spread of white supremacy, especially our white friends.",
-            "Despair is pushing millions of Americans into addiction -- leading to tens of thousands overdose deaths every year. By introducing the Green New Deal, @AOC put on the agenda the anti-despair program that will addresses the root causes of addiction.",
-            "And before conservatives start whining that I refer to tax cuts (aka revenue cuts) as costs, here’s a reminder that the world recognizes that they are costs too:",
-            "Congress’ insider trading problems used to be worse - and the good news is that some laws have been passed to tighten things up a bit."]
-    y_test = [1, 1, 1, 1]
+    x_raw = ["I really like apples.",
+            "Is this working?",
+            "I love dogs",
+            "I'd like to garden.",
+            "I need more data.",
+            "I need a solid GPU.",
+            "A neutral sentence.",
+            "Not a political sentence.",
+            "Just sitting here and coding.",
+            "Hopefully this isn't just as bad as random.",
+            "Wonder what this is going to turn out to be.",
+            "What the fuck.",
+            "I guess this means I need more data.",
+            "Or maybe the model just can't read."]
+    y_test = 2 * np.ones(len(x_raw))
 
 # Map data into vocabulary
 vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")
