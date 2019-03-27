@@ -14,6 +14,14 @@ import csv
 # Parameters
 # ==================================================
 
+def del_all_flags(FLAGS):
+    flags_dict = FLAGS._flags()    
+    keys_list = [keys for keys in flags_dict]    
+    for keys in keys_list:
+        FLAGS.__delattr__(keys)
+
+del_all_flags(tf.flags.FLAGS)
+
 # Data Parameters
 tf.flags.DEFINE_string("positive_data_file", "./data/ibc-data/polarity.lib", "Data source for the liberal data.")
 tf.flags.DEFINE_string("negative_data_file", "./data/ibc-data/polarity.con", "Data source for the conservative data.")
